@@ -1,122 +1,108 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+
+type Report = {
+  name: string;
+  sku: string;
+  soh: number;
+  actualCount: number;
+  variance: number;
+  status: string;
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [soh, setSoh] = useState("");
+  const [actualCount, setActualCount] = useState("");
+  const [itemSku, setItemSku] = useState("");
+  const [name, setName] = useState("");
+
+  const [result, setResult] = useState<Report | null>(null);
+
+  const handleVariance = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (soh.trim() === "" || actualCount.trim() === "") {
+      return;
+    }
+    const sohValue = Number(soh);
+    const actualValue = Number(actualCount);
+
+    let message;
+    if (sohValue > actualValue) {
+      message = "Actual count less than stock on hand. Further Investigation needed";
+    } else if (sohValue < actualValue) {
+      message = "Actual count more than stock on hand. Further Investigation needed";
+    } else {
+      message = "Stock matches actual count. Inventory is accurate";
+    }
+
+    setResult({
+      sku: itemSku,
+      name: name,
+      soh: sohValue,
+      actualCount: actualValue,
+      variance: actualValue - sohValue,
+      status: message,
+    });
+  };
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      <div className="container">
+        <h1>InSpect</h1>
+        <h3>Inventory Validation Layer for Stock Count Activity</h3>
+        <form onSubmit={handleVariance}>
+          <h4>Input Selected Item</h4>
+          <div className="item-info">
+            <label htmlFor="sku">Item SKU</label>
+            <input
+              type="text"
+              name="sku"
+              value={itemSku}
+              onChange={(e) => {
+                setItemSku(e.target.value);
+              }}
+            />
+            <label htmlFor="item name">Name</label>
+            <input
+              type="text"
+              name="item-name"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+            />
+          </div>
+          <div className="item-qty">
+            <div className="qty-group">
+              <label htmlFor="soh">SOH</label>
+              <input type="number" name="soh" value={soh} onChange={(e) => setSoh(e.target.value)} />
+            </div>
+            <div className="qty-group">
+              <label htmlFor="count">Actual Count</label>
+              <input type="number" name="count" value={actualCount} onChange={(e) => setActualCount(e.target.value)} />
+            </div>
+          </div>
 
-      <div className="ticks"></div>
+          <button type="submit">Check Variance</button>
+        </form>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+        {result && (
+          <div className="var-result">
+            <h4>Variance Report</h4>
+            <div>
+              <p>Item Sku : {result.sku}</p>
+              <p>Name : {result.name}</p>
+            </div>
+            <div className="var-group">
+              <p>Total Variance :</p>
+              <span className="variance">{result.variance}</span>
+            </div>
+            <p>Conclusion : {result.status}</p>
+          </div>
+        )}
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
