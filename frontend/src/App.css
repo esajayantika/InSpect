@@ -274,6 +274,35 @@ input {
   text-align: start;
 }
 
+.check-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+}
+.check-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin: 0;
+}
+.flag-card {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 100%;
+}
+.flag-card h5 {
+  margin: 0;
+}
+.flag-card ul {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin: 0;
+}
+
 @media (min-width: 1024px) {
   form {
     max-width: 800px;
