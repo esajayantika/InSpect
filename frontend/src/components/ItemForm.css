@@ -1,0 +1,80 @@
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  /* garis pemisah */
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+form h4 {
+  margin: auto;
+}
+button {
+  width: 100%;
+  height: 50px;
+  font-size: large;
+  border: 1px solid #f1f1f1;
+  border-radius: 10px;
+  background-color: rgb(74, 101, 253);
+  cursor: pointer;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 100%;
+  padding: 8px;
+  gap: 8px;
+}
+
+.item-qty {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 25px;
+}
+
+.qty-group {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+}
+
+input {
+  height: 40px;
+  width: 100%;
+  border: 1px solid #f1f1f1;
+  border-radius: 6px;
+  font-size: medium;
+  padding: 8px;
+}
+
+.check-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+}
+.check-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  form {
+    max-width: 800px;
+  }
+}
